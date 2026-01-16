@@ -1,64 +1,111 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { login as apiLogin, logout as apiLogout, getUserData } from '../services/auth-service';
 
-export const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    // set State
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // functions
-    const login = (usernameOrEmail, password) => {
-        setIsLoading(true);
+    // Beim Start: Prüfe ob Token + User Daten vorhanden
+    useEffect(() => {
+        checkAuth();
+    }, []);
 
-        setTimeout(() => {
-            if (usernameOrEmail && password) {
-                const fakeUser = {
-                    id: 1,
-                    username: usernameOrEmail.includes('@')
-                    ? usernameOrEmail.split('@')[0]
-                    : usernameOrEmail,
-                    email: usernameOrEmail.includes('@')
-                    ? usernameOrEmail
-                    : `$[usernameOrEmail]@examle.com`,
-                    role: usernameOrEmail === 'admin' || usernameOrEmail === 'admin@quiz.com'
-                    ? 'ADMIN'
-                    : 'USER'
-                };
+    // Prüft ob User eingeloggt ist (Token + User Daten in Local Storage)
+    const checkAuth = () => {
+        console.log('Prüfe Auth Status...');
 
-                const fakeToken = 'fake-jwt-token-' + Date.now();
+        const storedToken = localStorage.getItem('authToken');
+        const storedUserData = getUserData(); // aus Localstorage
 
-                setUser(fakeUser);
-                setToken(fakeToken);
-                console.log('Lofin erfolgreich (FAKE)', fakeUser);
-            } else {
-                console.error('Login fehlgeschlagen');
-            }
-            setIsLoading(false);
-        }, 1000);
+        if (storedToken && storedUserData) {
+            console.log('Token + User Daten gefunden - User ist eingeloggt');
+            setToken(storedToken);
+            setUser(storedUserData);
+            setIsAuthenticated(true);
+        } else {
+            console.log('kein Token oder User Daten User nicht eingeloggt');
+            setIsAuthenticated(false);
+        }
+
+        setIsLoading(false);
+    }
+
+    // Login
+    const login = async(usernameOrEmail, password) => {
+        try {
+            console.log('AuthContext: Login für', usernameOrEmail);
+
+            // API Call (speichert Token + User Daten in LocalStorage)
+            const response = await apiLogin(usernameOrEmail, password);
+
+            // Response enthält: {token, userId, username, email, role, expiresIn }
+            setToken(response.token);
+            setUser({
+                id: response.userId,
+                username: response.username, 
+                email: response.email,
+                role: response.role
+            });
+            setIsAuthenticated(true);
+
+            console.log('AuthContext: Login erfolgreich');
+            return response;
+
+        } catch (error) {
+            console.error('AuthContext: Login fehlgeschlagen', error);
+            throw error;
+        }
     };
 
+    // Logout
     const logout = () => {
-        setUser(null);
+        console.log('AuthContext: Logout');
+        apiLogout(); // Löscht localStorage
         setToken(null);
-        console.log('User ausgeloggt');
+        setUser(null);
+        setIsAuthenticated(false);
+        window.location.href = '/';
     };
-
-    const isAuthenticated = user !== null;
 
     const value = {
         user,
         token,
-        isLoading,
         isAuthenticated,
+        isLoading,
         login,
-        logout
+        logout,
+        checkAuth
     };
+
+    // loading State während checkAuth läuft
+    if (isLoading) {
+        return (
+            <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '100vh' 
+            }}>
+                <h2>Lädt...</h2>
+            </div>
+        );
+    }
 
     return (
         <AuthContext.Provider value={value}>
             {children}
-        </AuthContext.Provider>
+        </AuthContext.Provider>    
     );
+};
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth muss innerhalb von AuthProvider verwendet werden!');
+    }
+    return context;
 };
