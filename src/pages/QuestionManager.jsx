@@ -5,7 +5,7 @@ import {
   createQuizQuestion,
   updateQuizQuestion,
   deleteQuizQuestion,
-} from "../utils/java-api"; // Importieren der API-Funktion
+} from "../services/question-service"; // Importieren der API-Funktion
 import QuestionForm from "../components/question-form";
 import QuestionCard from "../components/question-card";
 

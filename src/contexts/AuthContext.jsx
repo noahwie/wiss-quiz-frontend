@@ -35,30 +35,30 @@ export const AuthProvider = ({ children }) => {
     }
 
     // Login
-    const login = async(usernameOrEmail, password) => {
-        try {
-            console.log('AuthContext: Login für', usernameOrEmail);
+    const login = async (usernameOrEmail, password) => {
+    const response = await apiLogin(usernameOrEmail, password);
 
-            // API Call (speichert Token + User Daten in LocalStorage)
-            const response = await apiLogin(usernameOrEmail, password);
+    localStorage.setItem("authToken", response.token);
+    localStorage.setItem(
+        "userData",
+        JSON.stringify({
+        id: response.userId,
+        username: response.username,
+        email: response.email,
+        role: response.role,
+        })
+    );
 
-            // Response enthält: {token, userId, username, email, role, expiresIn }
-            setToken(response.token);
-            setUser({
-                id: response.userId,
-                username: response.username, 
-                email: response.email,
-                role: response.role
-            });
-            setIsAuthenticated(true);
+    setToken(response.token);
+    setUser({
+        id: response.userId,
+        username: response.username,
+        email: response.email,
+        role: response.role,
+    });
+    setIsAuthenticated(true);
 
-            console.log('AuthContext: Login erfolgreich');
-            return response;
-
-        } catch (error) {
-            console.error('AuthContext: Login fehlgeschlagen', error);
-            throw error;
-        }
+    return response;
     };
 
     // Logout

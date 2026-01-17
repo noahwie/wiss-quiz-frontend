@@ -79,7 +79,7 @@ export const updateQuizQuestion = async (questionId, updatedData) => {
 
 export const deleteQuizQuestion = async (questionId) => {
   try {
-    const url = `questions/${questionId}/delete`;
+    const url = `questions/${questionId}`;
     await apiClient.delete(url);
     console.log("Frage erfolgreich gelöscht: ", questionId);
     return questionId;

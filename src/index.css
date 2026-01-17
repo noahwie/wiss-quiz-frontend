@@ -154,6 +154,7 @@ button:focus-visible {
   border: 2px solid #e1e5e9;
   border-radius: 2px;
   font-size: 1rem;
+  color: black;
   transition: all 0.3s ease;
   font-family: inherit;
   background: white;

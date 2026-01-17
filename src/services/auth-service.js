@@ -13,7 +13,7 @@ export const login = async (usernameOrEmail, password) => {
     console.log("📧 Login-Versuch für:", usernameOrEmail);
 
     // POST Request an Backend
-    const response = await apiClient.post("/auth/login", {
+    const response = await apiClient.post("auth/login", {
       usernameOrEmail,
       password,
     });

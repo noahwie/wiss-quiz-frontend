@@ -12,16 +12,14 @@ export const startGame = async (userId, category, totalQuestions = 10) => {
   try {
     console.log("🎮 Starte neues Game:", { userId, category, totalQuestions });
 
-    const response = await apiClient.post("/game/start", null, {
-      params: {
-        userId,
-        category,
-        totalQuestions,
-      },
+    const response = await apiClient.post("game/start", {
+      userId,
+      category,
+      totalQuestions,
     });
 
     console.log("✅ Game Session erstellt:", response.data);
-    return response.data; // Enthält: { id, userId, category, ... }
+    return response.data;
   } catch (error) {
     console.error("❌ Fehler beim Starten des Games:", error);
     throw error;
