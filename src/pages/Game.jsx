@@ -154,8 +154,8 @@ const Game = () => {
               onAnswerClick={() => handleCategoryClick("movies")}
             />
             <Button
-              text="Geographie"
-              onAnswerClick={() => handleCategoryClick("geography")}
+              text="Spiele"
+              onAnswerClick={() => handleCategoryClick("games")}
             />
           </div>
         </div>

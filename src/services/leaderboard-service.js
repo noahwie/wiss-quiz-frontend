@@ -45,11 +45,11 @@ export const getTop10ByCategory = async (category) => {
  * @param {number} userId - Die User-ID
  * @returns {Promise<Object>} User-Statistiken
  */
-export const getUserStats = async (userId) => {
+export const getUserStats = async () => {
   try {
-    console.log(`📊 Lade Statistiken für User ${userId}...`);
+    console.log("📊 Lade Statistiken für aktuellen User...");
 
-    const response = await apiClient.get(`/leaderboard/user/${userId}/stats`);
+    const response = await apiClient.get("leaderboard/user/stats");
 
     console.log("✅ User Stats geladen:", response.data);
     return response.data;

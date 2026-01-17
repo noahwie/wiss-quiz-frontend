@@ -2,32 +2,31 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Navigation = () => {
-  // AuthContext verwenden
   const { isAuthenticated, user, logout } = useAuth();
 
-  /**
-   * Logout Handler
-   */
   const handleLogout = () => {
     console.log("🚪 Logout wird durchgeführt...");
     logout();
-    // Redirect passiert automatisch in AuthContext!
   };
 
   return (
     <nav className="layout-header-nav">
       <Link to="/">Home</Link>
-      <Link to="/quiz">Quiz</Link>
-      <Link to="/admin">Fragen verwalten</Link>
+
+      {isAuthenticated && <Link to="/quiz">Quiz</Link>}
+
+      {isAuthenticated && <Link to="/leaderboard">Leaderboard</Link>}
+      {isAuthenticated && <Link to="/user-stats">Stats</Link>}
+
+      {isAuthenticated && user?.role === "ADMIN" && (
+        <Link to="/admin">Fragen verwalten</Link>
+      )}
+
       <Link to="/regeln">Regeln</Link>
       <Link to="/blabli">Impressum</Link>
-      {/* Conditional Rendering basierend auf Auth-Status */}
+
       {isAuthenticated ? (
-        // ==========================================
-        // EINGELOGGT: User-Info + Logout
-        // ==========================================
         <>
-          {/* User Info anzeigen */}
           <span
             className="nav-user-info"
             style={{
@@ -43,7 +42,6 @@ const Navigation = () => {
             👤 {user.username} ({user.role})
           </span>
 
-          {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="nav-logout-btn"
@@ -63,9 +61,6 @@ const Navigation = () => {
           </button>
         </>
       ) : (
-        // ==========================================
-        // NICHT EINGELOGGT: Login Link
-        // ==========================================
         <Link to="/login">Login</Link>
       )}
     </nav>

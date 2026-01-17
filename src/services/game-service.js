@@ -37,10 +37,8 @@ export const finishGame = async (sessionId, correctAnswers) => {
   try {
     console.log("🏁 Beende Game:", { sessionId, correctAnswers });
 
-    const response = await apiClient.put(`/game/${sessionId}/finish`, null, {
-      params: {
-        correctAnswers,
-      },
+    const response = await apiClient.put(`game/${sessionId}/finish`, {
+      correctAnswers,
     });
 
     console.log("✅ Game beendet - Score:", response.data.totalScore);
