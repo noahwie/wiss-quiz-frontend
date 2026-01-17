@@ -573,28 +573,10 @@ button:focus-visible {
   color: #cc0000;
 }
 
-/* If you want the "Question / Statement" column to potentially take more space
-   or have specific alignment if text is short, you can target it.
-   The grid-template-columns already gives it more space (3fr).
-*/
-.question-column {
-  /* Styles specific to the question column if needed */
-}
+/* ==========================================
+   AUTH PAGES & FORMS
+   ========================================== */
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-
-  /* AUTH PAGES & FORMS */
-  
 .auth-page {
   min-height: 60vh;
   display: flex;
@@ -649,4 +631,278 @@ button:focus-visible {
 .required {
   color: #dc3545;
 }
+
+/* ==========================================
+   NAVIGATION USER INFO & LOGOUT
+   ========================================== */
+
+.nav-user-info {
+  display: inline-block;
+  margin-left: 20px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.nav-logout-btn {
+  margin-left: 10px;
+  padding: 5px 12px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.nav-logout-btn:hover {
+  background: #5a6268;
+}
+
+.nav-logout-btn:active {
+  background: #545b62;
+}
+
+/* Responsive: Kleinere Screens */
+@media (max-width: 768px) {
+  .nav-user-info {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .nav-logout-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}
+
+/* ==========================================
+   LEADERBOARD STYLES
+   ========================================== */
+
+.leaderboard-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.leaderboard-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background: #f0f0f0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.tab-button:hover {
+  background: #e0e0e0;
+}
+
+.tab-button--active {
+  background: #324f6f;
+  color: white;
+  border-color: #324f6f;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-table thead {
+  background: #324f6f;
+  color: white;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.leaderboard-row:hover {
+  background: #f5f5f5;
+}
+
+.rank-cell {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  width: 80px;
+}
+
+.username-cell {
+  font-weight: 600;
+  color: #333;
+}
+
+.games-cell,
+.score-cell {
+  text-align: center;
+}
+
+.score-cell {
+  font-weight: bold;
+  color: #28a745;
+  font-size: 18px;
+}
+
+/* ==========================================
+   USER STATS STYLES
+   ========================================== */
+
+.user-stats-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.stats-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.stats-username {
+  color: #666;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin: 30px 0;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card--games {
+  border-left: 5px solid #007bff;
+}
+
+.stat-card--score {
+  border-left: 5px solid #28a745;
+}
+
+.stat-card--average {
+  border-left: 5px solid #ffc107;
+}
+
+.stat-icon {
+  font-size: 48px;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.no-games {
+  text-align: center;
+  padding: 40px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin: 30px 0;
+}
+
+.no-games h3 {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.stats-actions {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.button--secondary {
+  background: #6c757d;
+}
+
+.button--secondary:hover {
+  background: #5a6268;
+}
+
+.no-auth {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.no-auth h2 {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.no-auth p {
+  color: #999;
+  margin-bottom: 25px;
+  font-size: 16px;
+}
+
+/* If you want the "Question / Statement" column to potentially take more space
+   or have specific alignment if text is short, you can target it.
+   The grid-template-columns already gives it more space (3fr).
+*/
+.question-column {
+  /* Styles specific to the question column if needed */
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
 }

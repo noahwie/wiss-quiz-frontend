@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { finishGame } from "../services/game-service";
+
 import Button from "./button";
 
-const GameSession = ({ questions, onResetGame }) => {
+const GameSession = ({ questions, onResetGame, gameSessionId }) => {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [score, setScore] = useState(0);
@@ -39,6 +41,37 @@ const GameSession = ({ questions, onResetGame }) => {
     setQuestionIndex(questionIndex + 1);
     setFeedback(null);
     setIsAnswered(false);
+  };
+
+  /**
+   * Beendet das Game und speichert es im Backend
+   */
+  const handleGameEnd = async () => {
+    console.log("🏁 Game wird beendet...");
+
+    // 1. Score anzeigen (wie vorher)
+    setShowScore(true);
+    setFeedback(null);
+
+    // 2. Backend über Game-Ende informieren
+    if (gameSessionId) {
+      try {
+        console.log("💾 Speichere Resultat im Backend...");
+        const result = await finishGame(gameSessionId, score);
+
+        console.log("✅ Game gespeichert!", result);
+        console.log("🏆 Finaler Score:", result.totalScore);
+
+        // Optional: Erfolgsmeldung anzeigen
+        // setFeedback("✅ Dein Score wurde gespeichert!");
+      } catch (error) {
+        console.error("❌ Fehler beim Speichern:", error);
+        // Optional: Fehlermeldung anzeigen
+        // setFeedback("⚠️ Score konnte nicht gespeichert werden");
+      }
+    } else {
+      console.warn("⚠️ Keine Game Session ID - Score wird nicht gespeichert!");
+    }
   };
 
   // Define what happens when the game is reset
@@ -89,13 +122,7 @@ const GameSession = ({ questions, onResetGame }) => {
             disabled={feedback === null} // Disable button until an answer is selected
           />
         ) : (
-          <Button
-            text="Spiel beenden"
-            onAnswerClick={() => {
-              setShowScore(true);
-              setFeedback(null);
-            }}
-          />
+          <Button text="Spiel beenden" onAnswerClick={handleGameEnd} />
         ))}
 
       {/** Show the score only if the game is finished and the showScore state is true */}

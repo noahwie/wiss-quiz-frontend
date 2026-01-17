@@ -1,9 +1,9 @@
 import { useContext, useState} from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 function AuthTest() {
     // context
-    const { user, login, logout, isAuthenticated, isLoading } = useContext(AuthContext);
+    const { user, login, logout, isAuthenticated, isLoading } = useContext(useAuth);
 
     // local state 
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
